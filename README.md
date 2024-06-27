@@ -1,2 +1,2 @@
-# Softuin React JS
+# Softuni React JS
  Workshops from this course
