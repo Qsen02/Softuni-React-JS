@@ -1,10 +1,10 @@
 export default function Service() {
     return (
         <>
-            <section class="service_section layout_padding">
-                <div class="service_container">
-                    <div class="container ">
-                        <div class="heading_container heading_center">
+            <section className="service_section layout_padding">
+                <div className="service_container">
+                    <div className="container ">
+                        <div className="heading_container heading_center">
                             <h2>
                                 Our <span>Services</span>
                             </h2>
@@ -12,13 +12,13 @@ export default function Service() {
                                 There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration
                             </p>
                         </div>
-                        <div class="row">
-                            <div class="col-md-4 ">
-                                <div class="box ">
-                                    <div class="img-box">
+                        <div className="row">
+                            <div className="col-md-4 ">
+                                <div className="box ">
+                                    <div className="img-box">
                                         <img src="images/s1.png" alt="" />
                                     </div>
-                                    <div class="detail-box">
+                                    <div className="detail-box">
                                         <h5>
                                             Currency Wallet
                                         </h5>
@@ -33,12 +33,12 @@ export default function Service() {
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 ">
-                                <div class="box ">
-                                    <div class="img-box">
+                            <div className="col-md-4 ">
+                                <div className="box ">
+                                    <div className="img-box">
                                         <img src="images/s2.png" alt="" />
                                     </div>
-                                    <div class="detail-box">
+                                    <div className="detail-box">
                                         <h5>
                                             Security Storage
                                         </h5>
@@ -53,12 +53,12 @@ export default function Service() {
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 ">
-                                <div class="box ">
-                                    <div class="img-box">
+                            <div className="col-md-4 ">
+                                <div className="box ">
+                                    <div className="img-box">
                                         <img src="images/s3.png" alt=""/>
                                     </div>
-                                    <div class="detail-box">
+                                    <div className="detail-box">
                                         <h5>
                                             Expert Support
                                         </h5>
@@ -74,7 +74,7 @@ export default function Service() {
                                 </div>
                             </div>
                         </div>
-                        <div class="btn-box">
+                        <div className="btn-box">
                             <a href="">
                                 View All
                             </a>

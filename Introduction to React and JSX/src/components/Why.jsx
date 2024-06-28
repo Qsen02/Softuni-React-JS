@@ -1,19 +1,19 @@
 export default function WhySection() {
     return (
         <>
-            <section class="why_section layout_padding">
-                <div class="container">
-                    <div class="heading_container heading_center">
+            <section className="why_section layout_padding">
+                <div className="container">
+                    <div className="heading_container heading_center">
                         <h2>
                             Why Choose <span>Us</span>
                         </h2>
                     </div>
-                    <div class="why_container">
-                        <div class="box">
-                            <div class="img-box">
+                    <div className="why_container">
+                        <div className="box">
+                            <div className="img-box">
                                 <img src="images/w1.png" alt="" />
                             </div>
-                            <div class="detail-box">
+                            <div className="detail-box">
                                 <h5>
                                     Expert Management
                                 </h5>
@@ -23,11 +23,11 @@ export default function WhySection() {
                                 </p>
                             </div>
                         </div>
-                        <div class="box">
-                            <div class="img-box">
+                        <div className="box">
+                            <div className="img-box">
                                 <img src="images/w2.png" alt="" />
                             </div>
-                            <div class="detail-box">
+                            <div className="detail-box">
                                 <h5>
                                     Secure Investment
                                 </h5>
@@ -37,11 +37,11 @@ export default function WhySection() {
                                 </p>
                             </div>
                         </div>
-                        <div class="box">
-                            <div class="img-box">
+                        <div className="box">
+                            <div className="img-box">
                                 <img src="images/w3.png" alt="" />
                             </div>
-                            <div class="detail-box">
+                            <div className="detail-box">
                                 <h5>
                                     Instant Trading
                                 </h5>
@@ -51,11 +51,11 @@ export default function WhySection() {
                                 </p>
                             </div>
                         </div>
-                        <div class="box">
-                            <div class="img-box">
+                        <div className="box">
+                            <div className="img-box">
                                 <img src="images/w4.png" alt="" />
                             </div>
-                            <div class="detail-box">
+                            <div className="detail-box">
                                 <h5>
                                     Happy Customers
                                 </h5>
@@ -66,7 +66,7 @@ export default function WhySection() {
                             </div>
                         </div>
                     </div>
-                    <div class="btn-box">
+                    <div className="btn-box">
                         <a href="">
                             Read More
                         </a>
