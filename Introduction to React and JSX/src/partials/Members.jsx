@@ -1,18 +1,17 @@
-export default function Members(props) {
-    console.log(props);
+export default function Members() {
     return (
         <>
             <div className="col-lg-3 col-sm-6">
                 <div className="box ">
                     <div className="img-box">
-                        <img src={props.member.image} className="img1" alt="" />
+                        <img src="images/team-4.jpg" className="img1" alt="" />
                     </div>
                     <div className="detail-box">
                         <h5>
-                            {props.member.name}
+                            "Josephine Allard"
                         </h5>
                         <p>
-                            {props.member.position}
+                            "Marketing Head"
                         </p>
                     </div>
                     <div className="social_box">
