@@ -47,7 +47,6 @@
     width: 300px;
     height: 50px;
     border-radius: 10px;
-    border: none;
     font-size: 14pt;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
@@ -67,7 +66,7 @@
     text-align: center;
     background-color: white;
     color: black;
-    padding: 10px;
+    padding-top: 20px;
 }
 
 .container input::placeholder {
@@ -93,4 +92,28 @@
 
 .container button:hover {
     background-color: brown;
+}
+
+.errorField {
+    border-bottom: solid 3px red;
+}
+
+.errorLabel {
+    color: red;
+}
+
+.error {
+    position: fixed;
+    width: 200px;
+    height: auto;
+    padding: 20px;
+    right: 50px;
+    top: 60px;
+    text-align: center;
+    font-size: 14pt;
+    background-color: red;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 10px;
+    cursor: pointer;
 }
