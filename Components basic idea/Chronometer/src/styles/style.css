@@ -1,0 +1,47 @@
+.container {
+    display: block;
+    margin: 0 auto;
+    margin-top: 200px;
+    width: 500px;
+    height: auto;
+    padding: 20px;
+    background-color: rgb(85, 84, 84);
+    color: rgb(12, 202, 12);
+    border-radius: 10px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.display {
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 200px;
+    height: 100px;
+    background-color: rgb(108, 104, 104);
+    text-align: center;
+    font-size: 40pt;
+    padding-top: 30px;
+    border-radius: 20px;
+    border: solid 1px rgb(85, 84, 84);
+}
+
+.buttons {
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.buttons button {
+    display: inline-block;
+    width: 100px;
+    height: 35px;
+    margin-left: 30px;
+    background-color: rgb(55, 54, 54);
+    color: rgb(12, 202, 12);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16pt;
+    border-radius: 20px;
+}
