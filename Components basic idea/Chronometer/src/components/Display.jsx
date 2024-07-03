@@ -1,5 +1,5 @@
-export default function Display(props){
+export default function Display(props) {
     return (
-        <div className="display">{props.count}</div>
+        <div className="display" id={props.flag}>{props.seconds}:{props.miliseconds}</div>
     )
 }

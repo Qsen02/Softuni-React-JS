@@ -1,30 +1,58 @@
 import "./styles/style.css";
 import Display from "./components/Display";
+import StartBtn from "./components/StartBtn";
 import { useState } from "react";
 
 function App() {
-    let [count, setCount] = useState("00:00");
 
-    function start(event) {
-        event.target.disabled = true;
-        let hundreds = 10;
-        for (let i = 0; i < 60; i++) {
-            for (let j = 0; j < 60; j++) {
-                hundreds += 10;
-                setTimeout(() => setCount(oldValue => oldValue = `${i}:${j}`), hundreds);
-            }
+    let [disabled, setDisabled] = useState(false);
+    let [flag, setFlag] = useState("false");
+    let [miliseconds, setMiliseconds] = useState(0);
+    let [seconds, setSeconds] = useState(0);
+
+    function start() {
+        setDisabled(oldValue => oldValue = true);
+        let timeout;
+        let display = document.querySelector(".display");
+        let miliseconds=Number(display.textContent.split(":")[1]);
+        setFlag(oldValue => oldValue = "false");
+        if (display.id == "true") {
+            clearTimeout(timeout);
+            timeout = undefined;
+            return;
         }
+        if (display.id == "false") {
+            setMiliseconds(oldValue => oldValue += 1);
+            if (miliseconds == 59) {
+                console.log(miliseconds);
+                setMiliseconds(oldValue => oldValue = 0);
+                setSeconds(oldValue => oldValue += 1);
+            }
+            timeout = setTimeout(start, 10);
+        }
+    }
+
+    function stop() {
+        setFlag(oldValue => oldValue = "true");
+        setDisabled(oldValue => oldValue = false);
+    }
+
+    function zero() {
+        setFlag(oldValue => oldValue = "true");
+        setDisabled(oldValue => oldValue = false);
+        setMiliseconds(oldValue => oldValue = 0);
+        setSeconds(oldValue => oldValue = 0);
     }
 
     return (
         <>
             <div className="container">
                 <h1>Chronometer</h1>
-                <Display count={count} />
+                <Display miliseconds={miliseconds} seconds={seconds} flag={flag} />
                 <div className="buttons">
-                    <button onClick={start}>Start</button>
-                    <button>Stop</button>
-                    <button>Zeroed</button>
+                    <StartBtn disabled={disabled} event={start} />
+                    <button onClick={stop}>Stop</button>
+                    <button onClick={zero}>Zeroed</button>
                 </div>
 
             </div>
