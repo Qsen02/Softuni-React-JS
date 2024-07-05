@@ -1,0 +1,56 @@
+.addForm {
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 300px;
+    height: auto;
+    text-align: center;
+    font-size: 16pt;
+    background-color: rgb(4, 255, 171);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.addForm label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.addForm input {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    width: 200px;
+    height: 35px;
+    font-size: 14pt;
+    border: none;
+    border-radius: 7px;
+}
+
+.addForm select {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 7px;
+    width: 100px;
+    height: 30px;
+}
+
+.addForm button {
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    width: 100px;
+    height: 35px;
+    border-radius: 20px;
+    font-size: 12pt;
+    border: none;
+    background-color: rgb(189, 182, 182);
+    cursor: pointer;
+}
+
+.addForm button:hover {
+    background-color: lightgray;
+}
