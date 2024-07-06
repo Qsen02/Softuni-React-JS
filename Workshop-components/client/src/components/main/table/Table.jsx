@@ -2,11 +2,42 @@ import UserRow from "./user-row/UserRow";
 import Errors from "./errors/Errors";
 import { useState } from "react";
 import { useEffect } from "react";
+import Thead from "./thead/Thead";
+import CreateForm from "./createForm/CreateForm";
+import Pagination from "./pagination/Pagination"
+import Search from "./search/Search"
+import Details from "./details/Details";
 
 export default function Table() {
     let baseUrl = "http://localhost:3030/jsonstore"
     let [users, setUsers] = useState([]);
     let [pending, setPending] = useState(true);
+    let [createFormShow, setCreateFormShow] = useState(false);
+    let [detailsShow, setDetailsShow] = useState(null);
+
+    function onClickHandler() {
+        setCreateFormShow(true);
+    }
+    function onCloseHandler() {
+        setCreateFormShow(false);
+    }
+
+    function onDetailsShowHandler(id) {
+        (async function onShow() {
+            try {
+                let response = await fetch(`${baseUrl}/users/${id}`);
+                if (!response.ok) {
+                    let err = await response.json();
+                    throw new Error(err.message);
+                }
+                let data=await response.json();
+                setDetailsShow(data);
+            } catch (err) {
+                alert(err.message);
+                return;
+            }
+        })()
+    }
 
     useEffect(() => {
         (async function getUsers() {
@@ -21,93 +52,87 @@ export default function Table() {
                 setPending(false);
             } catch (err) {
                 alert(err.message);
+                return;
             } finally {
                 setPending(false);
             }
         })();
     }, [])
 
+    async function onCreateHandler(event) {
+        event.preventDefault();
+        let formData = new FormData(event.target);
+        let firstName = formData.get("firstName");
+        let lastName = formData.get("lastName");
+        let email = formData.get("email");
+        let phoneNumber = formData.get("phoneNumber");
+        let imageUrl = formData.get("imageUrl");
+        let country = formData.get("country");
+        let city = formData.get("city");
+        let streetNumber = formData.get("city");
+        let street = formData.get("street");
+        let address = {
+            country,
+            city,
+            street,
+            streetNumber
+        }
+        try {
+            if (!firstName || !lastName || !email || !phoneNumber || !imageUrl || !country || !city || !street || !streetNumber) {
+                throw new Error("All fields required!");
+            }
+            let response = await fetch(`${baseUrl}/users`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ firstName, lastName, email, phoneNumber, imageUrl, address })
+            })
+            if (!response.ok) {
+                let err = await response.json();
+                throw new Error(err.message);
+            }
+            let data = await response.json();
+            setUsers(oldUsers => [...oldUsers, data]);
+            setCreateFormShow(false);
+        } catch (err) {
+            alert(err.message);
+            return;
+        }
+    }
+
     return (
-        <table className="table">
-            <div className="loading-shade">
-                {pending
-                    ? <div class="spinner"></div>
-                    : ""
-                }
-                {/* <Errors />  */}
+        <section className="card users-container">
+            {createFormShow ? <CreateForm onCreate={onCreateHandler} onClose={onCloseHandler} /> : ""}
+            {detailsShow ? <Details userData={detailsShow}/> : ""}
+            <Search />
+            <div className="table-wrapper">
+                <table className="table">
+                    <div className="loading-shade">
+                        {pending
+                            ? <div className="spinner"></div>
+                            : ""
+                        }
+                        {/* <Errors />  */}
+                    </div>
+                    <thead>
+                        <Thead />
+                    </thead>
+                    <tbody>
+                        {users.map(user => <UserRow
+                            key={user._id}
+                            id={user._id}
+                            onDetailsShow={onDetailsShowHandler}
+                            firstname={user.firstName}
+                            lastname={user.lastName}
+                            email={user.email}
+                            imageUrl={user.imageUrl}
+                            phoneNumber={user.phoneNumber}
+                            createdAt={user.createdAt}
+                        />)}
+                    </tbody>
+                </table>
             </div>
-            <thead>
-                <tr>
-                    <th>
-                        Image
-                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-down" className="icon svg-inline--fa fa-arrow-down Table_icon__+HHgn" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                            <path fill="currentColor"
-                                d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z">
-                            </path>
-                        </svg>
-                    </th>
-                    <th>
-                        First name
-                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-down" className="icon svg-inline--fa fa-arrow-down Table_icon__+HHgn" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                            <path fill="currentColor"
-                                d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z">
-                            </path>
-                        </svg>
-                    </th>
-                    <th>
-                        Last name
-                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-down" className="icon svg-inline--fa fa-arrow-down Table_icon__+HHgn" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                            <path fill="currentColor"
-                                d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z">
-                            </path>
-                        </svg>
-                    </th>
-                    <th>
-                        Email
-                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-down" className="icon svg-inline--fa fa-arrow-down Table_icon__+HHgn" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                            <path fill="currentColor"
-                                d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z">
-                            </path>
-                        </svg>
-                    </th>
-                    <th>
-                        Phone
-                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-down" className="icon svg-inline--fa fa-arrow-down Table_icon__+HHgn" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                            <path fill="currentColor"
-                                d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z">
-                            </path>
-                        </svg>
-                    </th>
-                    <th>
-                        Created
-                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-down" className="icon svg-inline--fa fa-arrow-down Table_icon__+HHgn" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                            <path fill="currentColor"
-                                d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z">
-                            </path>
-                        </svg>
-                    </th>
-                    <th>
-                        Actions
-                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-down" className="icon svg-inline--fa fa-arrow-down Table_icon__+HHgn" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                            <path fill="currentColor"
-                                d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z">
-                            </path>
-                        </svg>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                {users.map(user => <UserRow
-                    key={user._id}
-                    id={user._id}
-                    firstname={user.firstName}
-                    lastname={user.lastName}
-                    email={user.email}
-                    imageUrl={user.imageUrl}
-                    phoneNumber={user.phoneNumber}
-                    createdAt={user.createdAt}
-                />)}
-            </tbody>
-        </table>
+            <button onClick={onClickHandler} className="btn-add btn">Add new user</button>
+            <Pagination />
+        </section>
     )
 }
