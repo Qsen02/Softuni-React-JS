@@ -1,14 +1,16 @@
+import { formatDate } from "../../../../utils/dateFormatter"
 export default function Details({
-    userData
+    userData,
+    onClose
 }) {
     return (
         <div className="overlay">
-            <div className="backdrop"></div>
+            <div className="backdrop" onClick={onClose}></div>
             <div className="modal">
                 <div className="detail-container">
                     <header className="headers">
                         <h2>User Detail</h2>
-                        <button className="btn close">
+                        <button className="btn close" onClick={onClose}>
                             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="xmark"
                                 className="svg-inline--fa fa-xmark" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
                                 <path fill="currentColor"
@@ -35,8 +37,8 @@ export default function Details({
                                 <strong> {Object.values(userData.address).join(", ")} </strong>
                             </p>
 
-                            <p>Created on: <strong>{userData.createdAt}</strong></p>
-                            <p>Modified on: <strong>{userData.updatedAt}</strong></p>
+                            <p>Created on: <strong>{formatDate(userData.createdAt)}</strong></p>
+                            <p>Modified on: <strong>{formatDate(userData.updatedAt)}</strong></p>
                         </div>
                     </div>
                 </div>

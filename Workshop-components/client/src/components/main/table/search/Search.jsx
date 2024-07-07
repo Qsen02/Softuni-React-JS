@@ -1,6 +1,9 @@
-export default function Search() {
+export default function Search({
+    onSearch,
+    onReset
+}) {
     return (
-        <form className="search-form">
+        <form onSubmit={onSearch} className="search-form">
             <h2>
                 <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" className="svg-inline--fa fa-user SearchBar_icon__cXpTg" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                     <path fill="currentColor"
@@ -12,11 +15,11 @@ export default function Search() {
             <div className="search-input-container">
                 <input type="text" placeholder="Please, select the search criteria" name="search" />
 
-                <button className="btn close-btn">
-                    <i className="fa-solid fa-xmark"></i>
+                <button onClick={onReset} className="btn close-btn">
+                    <i onClick={onReset} className="fa-solid fa-xmark"></i>
                 </button>
 
-                <button className="btn" title="Please, select the search criteria">
+                <button type="submit" className="btn" title="Please, select the search criteria">
                     <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
             </div>
@@ -24,11 +27,11 @@ export default function Search() {
             <div className="filter">
                 <span>Search Criteria:</span>
                 <select name="criteria" className="criteria">
-                    <option value="">Not selected</option>
-                    <option value="">First Name</option>
-                    <option value="">Last Name</option>
-                    <option value="">Email</option>
-                    <option value="">Phone</option>
+                    <option value="Not selected">Not selected</option>
+                    <option value="firstName">First Name</option>
+                    <option value="lastName">Last Name</option>
+                    <option value="email">Email</option>
+                    <option value="phoneNumber">Phone</option>
                 </select>
             </div>
         </form>
