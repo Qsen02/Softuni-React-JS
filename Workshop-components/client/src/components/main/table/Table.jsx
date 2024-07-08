@@ -262,9 +262,6 @@ export default function Table() {
             if (criteria == "Not selected") {
                 throw new Error("Please select one criteria");
             }
-            if (!value) {
-                throw new Error("Enter search value!");
-            }
             let response = await fetch(`${baseUrl}/users`);
             if (!response.ok) {
                 setIsFailedToFetch(true);
