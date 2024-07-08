@@ -1,7 +1,28 @@
+import { useState } from "react";
+
 export default function Search({
-    onSearch,
-    onReset
+    onSearch
 }) {
+
+    let [showButton, setShowButton] = useState(false);
+    function showXButton(event) {
+        if (event.target.value != "") {
+            setShowButton(true);
+        } else {
+            setShowButton(false);
+        }
+    }
+
+    function onReset(event) {
+        event.preventDefault();
+        if (event.target.tagName == "BUTTON") {
+            event.target.parentElement.parentElement.reset();
+            setShowButton(false);
+        } else {
+            event.target.parentElement.parentElement.parentElement.reset();
+            setShowButton(false);
+        }
+    }
     return (
         <form onSubmit={onSearch} className="search-form">
             <h2>
@@ -13,11 +34,13 @@ export default function Search({
                 <span>Users</span>
             </h2>
             <div className="search-input-container">
-                <input type="text" placeholder="Please, select the search criteria" name="search" />
-
-                <button onClick={onReset} className="btn close-btn">
-                    <i onClick={onReset} className="fa-solid fa-xmark"></i>
-                </button>
+                <input onChange={showXButton} type="text" placeholder="Please, select the search criteria" name="search" />
+                {showButton
+                    ? <button onClick={onReset} className="btn close-btn">
+                        <i onClick={onReset} className="fa-solid fa-xmark"></i>
+                    </button>
+                    : ""
+                }
 
                 <button type="submit" className="btn" title="Please, select the search criteria">
                     <i className="fa-solid fa-magnifying-glass"></i>

@@ -22,7 +22,17 @@ export default function Table() {
     let [resultsNotFind, setResultsNotFind] = useState(false);
     let [isNoContent, setIsNoContent] = useState(false);
     let [isShowDeleteForm, setIsShowDeleteForm] = useState(null);
-    let [isShowEditForm,setIsShowEditForm]=useState(null);
+    let [isShowEditForm, setIsShowEditForm] = useState(null);
+    let [page, setPage] = useState(1);
+    let [maxPages, setMaxPages] = useState(1);
+
+    let criteries = {
+        "First name": "firstName",
+        "Last name": "lastName",
+        "Email": "email",
+        "Phone": "phoneNumber",
+        "Created": "createdAt"
+    }
 
     function onClickHandler() {
         setCreateFormShow(true);
@@ -33,15 +43,6 @@ export default function Table() {
 
     function closeDetailsHandler() {
         setDetailsShow(false);
-    }
-
-    function onSerachResetHandler(event) {
-        event.preventDefault();
-        if (event.target.tagName == "BUTTON") {
-            event.target.parentElement.parentElement.reset();
-        } else {
-            event.target.parentElement.parentElement.parentElement.reset();
-        }
     }
 
     function showDeleteFormHandler(id) {
@@ -64,7 +65,7 @@ export default function Table() {
         setIsShowDeleteForm(null);
     }
 
-    function showEditFormHandler(id){
+    function showEditFormHandler(id) {
         (async function getCurUser() {
             try {
                 let response = await fetch(`${baseUrl}/users/${id}`);
@@ -80,7 +81,7 @@ export default function Table() {
         })()
     }
 
-    function closeEditFormHandler(){
+    function closeEditFormHandler() {
         setIsShowEditForm(null);
     }
 
@@ -93,64 +94,64 @@ export default function Table() {
             if (!response.ok) {
                 throw new Error(err);
             }
-            let data=await response.json();
-            setUsers(oldUsers=>oldUsers.filter(el=>el._id!=data._id));
+            let data = await response.json();
+            setUsers(oldUsers => oldUsers.filter(el => el._id != data._id));
             setIsShowDeleteForm(null);
         } catch (err) {
             setIsFailedToFetch(true);
             return;
         }
     }
-function onEditHandler(event){
-    event.preventDefault();
-    (async function onEdit() {
-        const id=event.target.id;
-        console.log(id);
-        let formData = new FormData(event.target);
-        let firstName = formData.get("firstName");
-        let lastName = formData.get("lastName");
-        let email = formData.get("email");
-        let phoneNumber = formData.get("phoneNumber");
-        let imageUrl = formData.get("imageUrl");
-        let country = formData.get("country");
-        let city = formData.get("city");
-        let streetNumber = formData.get("city");
-        let street = formData.get("street");
-        let address = {
-            country,
-            city,
-            street,
-            streetNumber
-        }
-        let createdAt = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
-        let updatedAt = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
-        try {
-            if (!firstName || !lastName || !email || !phoneNumber || !imageUrl || !country || !city || !street || !streetNumber) {
-                throw new Error("All fields required!");
+    function onEditHandler(event) {
+        event.preventDefault();
+        (async function onEdit() {
+            const id = event.target.id;
+            console.log(id);
+            let formData = new FormData(event.target);
+            let firstName = formData.get("firstName");
+            let lastName = formData.get("lastName");
+            let email = formData.get("email");
+            let phoneNumber = formData.get("phoneNumber");
+            let imageUrl = formData.get("imageUrl");
+            let country = formData.get("country");
+            let city = formData.get("city");
+            let streetNumber = formData.get("city");
+            let street = formData.get("street");
+            let address = {
+                country,
+                city,
+                street,
+                streetNumber
             }
-            let response = await fetch(`${baseUrl}/users/${id}`, {
-                method: "put",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ firstName, lastName, email, phoneNumber, imageUrl, createdAt, updatedAt, address,_id:id})
-            })
-            if (!response.ok) {
-                setIsFailedToFetch(true);
+            let createdAt = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+            let updatedAt = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+            try {
+                if (!firstName || !lastName || !email || !phoneNumber || !imageUrl || !country || !city || !street || !streetNumber) {
+                    throw new Error("All fields required!");
+                }
+                let response = await fetch(`${baseUrl}/users/${id}`, {
+                    method: "put",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ firstName, lastName, email, phoneNumber, imageUrl, createdAt, updatedAt, address, _id: id })
+                })
+                if (!response.ok) {
+                    setIsFailedToFetch(true);
+                    return;
+                }
+                let data = await response.json();
+                setUsers(oldUsers => {
+                    let user = oldUsers.find(el => el._id == data._id);
+                    let index = oldUsers.indexOf(user);
+                    oldUsers[index] = data;
+                    return [...oldUsers];
+                })
+                setIsShowEditForm(null);
+            } catch (err) {
+                alert(err.message);
                 return;
             }
-            let data = await response.json();
-            setUsers(oldUsers=>{
-                let user=oldUsers.find(el=>el._id==data._id);
-                let index=oldUsers.indexOf(user);
-                oldUsers[index]=data;
-                return [...oldUsers];
-            })
-            setIsShowEditForm(null);
-        } catch (err) {
-            alert(err.message);
-            return;
-        }
-    })()
-}
+        })()
+    }
 
     function onDetailsShowHandler(id) {
         (async function onShow() {
@@ -167,27 +168,47 @@ function onEditHandler(event){
             }
         })()
     }
+    async function getUsers(limit, page) {
+        try {
+            let response = await fetch(`${baseUrl}/users`);
+            if (!response.ok) {
+                throw new Error(err);
+            }
+            let data = await response.json();
+            let dataArray = Object.values(data);
+            if (dataArray.length == 0) {
+                setIsNoContent(true);
+            }
+            let userCollcetions = [];
+            while (dataArray.length != 0) {
+                let users = []
+                for (let i = 0; i < limit; i++) {
+                    if (dataArray.length == 0) {
+                        break;
+                    } else {
+                        let user = dataArray.shift();
+                        users.push(user);
+                    }
+                }
+                userCollcetions.push(users);
+            }
+            if (page - 1 > userCollcetions.length - 1) {
+                return;
+            }
+            setUsers(userCollcetions[page - 1]);
+            setMaxPages(userCollcetions.length);
+            setPending(false);
+        } catch (err) {
+            setIsFailedToFetch(true);
+            return;
+        } finally {
+            setPending(false);
+        }
+    }
 
     useEffect(() => {
-        (async function getUsers() {
-            try {
-                let response = await fetch(`${baseUrl}/users`);
-                if (!response.ok) {
-                    throw new Error(err);
-                }
-                let data = await response.json();
-                if (Object.values(data).length == 0) {
-                    setIsNoContent(true);
-                }
-                setUsers(Object.values(data));
-                setPending(false);
-            } catch (err) {
-                setIsFailedToFetch(true);
-                return;
-            } finally {
-                setPending(false);
-            }
-        })();
+        let limit = document.querySelector(".limit").value;
+        getUsers(limit, page)
     }, [])
 
     async function onCreateHandler(event) {
@@ -262,13 +283,57 @@ function onEditHandler(event){
         }
     }
 
+    function onSortUsersHandler(target) {
+        let head = target.textContent;
+        let criteria = criteries[head];
+        setUsers(oldUsers => {
+            let sortedUsers = oldUsers.sort((a, b) => a[criteria].localeCompare(b[criteria]));
+            return [...sortedUsers];
+        });
+    }
+
+    function onUnsortUsersHandler(target) {
+        let head = target.textContent;
+        let criteria = criteries[head];
+        setUsers(oldUsers => {
+            let sortedUsers = oldUsers.sort((a, b) => b[criteria].localeCompare(a[criteria]));
+            return [...sortedUsers];
+        });
+    }
+
+    async function paginationHandler(event) {
+        let limit = event.target.value;
+        await getUsers(limit,page);
+    }
+    async function onNextPage() {
+        let limit = document.querySelector(".limit").value;
+        setPage(oldValue => oldValue + 1);;
+        await getUsers(limit, page + 1);
+    }
+    async function onPreviousPage() {
+        let limit = document.querySelector(".limit").value;
+        setPage(oldValue => oldValue - 1);
+        await getUsers(limit, page - 1);
+    }
+    async function onFirstPage() {
+        let limit = document.querySelector(".limit").value;
+        setPage(1);
+        let firtsPage=1;
+        await getUsers(limit, firtsPage);
+    }
+    async function onLastPage() {
+        let limit = document.querySelector(".limit").value;
+        setPage(oldValue => oldValue = maxPages);
+        await getUsers(limit, maxPages);
+    }
+
     return (
         <section className="card users-container">
             {createFormShow ? <CreateForm onCreate={onCreateHandler} onClose={onCloseHandler} /> : ""}
             {detailsShow ? <Details userData={detailsShow} onClose={closeDetailsHandler} /> : ""}
             {isShowDeleteForm ? <DeleteForm userId={isShowDeleteForm._id} onClose={closeDeleteFormHandler} onDelete={onDeleteUser} /> : ""}
-            {isShowEditForm? <EditForm userData={isShowEditForm} onClose={closeEditFormHandler} onEdit={onEditHandler}/>:""}
-            <Search onSearch={onSearchHandler} onReset={onSerachResetHandler} />
+            {isShowEditForm ? <EditForm userData={isShowEditForm} onClose={closeEditFormHandler} onEdit={onEditHandler} /> : ""}
+            <Search onSearch={onSearchHandler} />
             <div className="table-wrapper">
                 {pending || resultsNotFind || isFailedToFetch || isNoContent
                     ? <div className="loading-shade">
@@ -284,7 +349,7 @@ function onEditHandler(event){
                 }
                 <table className="table">
                     <thead>
-                        <Thead />
+                        <Thead onSortUsers={onSortUsersHandler} onUnsortUsers={onUnsortUsersHandler} />
                     </thead>
                     <tbody>
                         {users.map(user => <UserRow
@@ -304,7 +369,15 @@ function onEditHandler(event){
                 </table>
             </div>
             <button onClick={onClickHandler} className="btn-add btn">Add new user</button>
-            <Pagination />
+            <Pagination
+                paginationHandler={paginationHandler}
+                page={page}
+                maxPages={maxPages}
+                nextPage={onNextPage}
+                previousPage={onPreviousPage}
+                firstPage={onFirstPage}
+                lastPage={onLastPage}
+            />
         </section>
     )
 }
