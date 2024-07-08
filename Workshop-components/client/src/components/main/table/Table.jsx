@@ -207,7 +207,7 @@ export default function Table() {
     }
 
     useEffect(() => {
-        let limit = document.querySelector(".limit").value;
+        let limit = Number(document.querySelector(".limit").value);
         getUsers(limit, page)
     }, [])
 
@@ -302,30 +302,26 @@ export default function Table() {
     }
 
     async function paginationHandler(event) {
-        let limit = event.target.value;
-        await getUsers(limit,page);
+        let limit = Number(event.target.value);
+        await getUsers(limit, page);
     }
-    async function onNextPage() {
-        let limit = document.querySelector(".limit").value;
+    function onNextPage() {
         setPage(oldValue => oldValue + 1);;
-        await getUsers(limit, page + 1);
     }
-    async function onPreviousPage() {
-        let limit = document.querySelector(".limit").value;
+    function onPreviousPage() {
         setPage(oldValue => oldValue - 1);
-        await getUsers(limit, page - 1);
     }
-    async function onFirstPage() {
-        let limit = document.querySelector(".limit").value;
+    function onFirstPage() {
         setPage(1);
-        let firtsPage=1;
-        await getUsers(limit, firtsPage);
     }
-    async function onLastPage() {
-        let limit = document.querySelector(".limit").value;
+    function onLastPage() {
         setPage(oldValue => oldValue = maxPages);
-        await getUsers(limit, maxPages);
     }
+
+    useEffect(() => {
+        let limit = Number(document.querySelector(".limit").value);
+        getUsers(limit, page);
+    }, [page])
 
     return (
         <section className="card users-container">
