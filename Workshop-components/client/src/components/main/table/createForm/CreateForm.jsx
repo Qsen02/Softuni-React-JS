@@ -1,6 +1,8 @@
 export default function CreateForm({
     onClose,
-    onCreate
+    onCreate,
+    formValues,
+    createChangeHandler
 }) {
     return (
         <div className="overlay">
@@ -24,14 +26,14 @@ export default function CreateForm({
                                 <label htmlFor="firstName">First name</label>
                                 <div className="input-wrapper">
                                     <span><i className="fa-solid fa-user"></i></span>
-                                    <input id="firstName" name="firstName" type="text" />
+                                    <input id="firstName" name="firstName" type="text" value={formValues.firstName} onChange={createChangeHandler}/>
                                 </div>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="lastName">Last name</label>
                                 <div className="input-wrapper">
                                     <span><i className="fa-solid fa-user"></i></span>
-                                    <input id="lastName" name="lastName" type="text" />
+                                    <input id="lastName" name="lastName" type="text" value={formValues.lastName} onChange={createChangeHandler}/>
                                 </div>
                             </div>
                         </div>
@@ -41,14 +43,14 @@ export default function CreateForm({
                                 <label htmlFor="email">Email</label>
                                 <div className="input-wrapper">
                                     <span><i className="fa-solid fa-envelope"></i></span>
-                                    <input id="email" name="email" type="text" />
+                                    <input id="email" name="email" type="text" value={formValues.email} onChange={createChangeHandler}/>
                                 </div>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="phoneNumber">Phone number</label>
                                 <div className="input-wrapper">
                                     <span><i className="fa-solid fa-phone"></i></span>
-                                    <input id="phoneNumber" name="phoneNumber" type="text" />
+                                    <input id="phoneNumber" name="phoneNumber" type="text" value={formValues.phoneNumber} onChange={createChangeHandler}/>
                                 </div>
                             </div>
                         </div>
@@ -57,7 +59,7 @@ export default function CreateForm({
                             <label htmlFor="imageUrl">Image Url</label>
                             <div className="input-wrapper">
                                 <span><i className="fa-solid fa-image"></i></span>
-                                <input id="imageUrl" name="imageUrl" type="text" />
+                                <input id="imageUrl" name="imageUrl" type="text" value={formValues.imageUrl} onChange={createChangeHandler}/>
                             </div>
                         </div>
 
@@ -66,14 +68,14 @@ export default function CreateForm({
                                 <label htmlFor="country">Country</label>
                                 <div className="input-wrapper">
                                     <span><i className="fa-solid fa-map"></i></span>
-                                    <input id="country" name="country" type="text" />
+                                    <input id="country" name="country" type="text" value={formValues.country} onChange={createChangeHandler}/>
                                 </div>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="city">City</label>
                                 <div className="input-wrapper">
                                     <span><i className="fa-solid fa-city"></i></span>
-                                    <input id="city" name="city" type="text" />
+                                    <input id="city" name="city" type="text" value={formValues.city} onChange={createChangeHandler}/>
                                 </div>
                             </div>
                         </div>
@@ -83,14 +85,14 @@ export default function CreateForm({
                                 <label htmlFor="street">Street</label>
                                 <div className="input-wrapper">
                                     <span><i className="fa-solid fa-map"></i></span>
-                                    <input id="street" name="street" type="text" />
+                                    <input id="street" name="street" type="text" value={formValues.street} onChange={createChangeHandler}/>
                                 </div>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="streetNumber">Street number</label>
                                 <div className="input-wrapper">
                                     <span><i className="fa-solid fa-house-chimney"></i></span>
-                                    <input id="streetNumber" name="streetNumber" type="text" />
+                                    <input id="streetNumber" name="streetNumber" type="text" value={formValues.streetNumber} onChange={createChangeHandler}/>
                                 </div>
                             </div>
                         </div>

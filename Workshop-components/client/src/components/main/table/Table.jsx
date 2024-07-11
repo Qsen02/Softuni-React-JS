@@ -25,6 +25,28 @@ export default function Table() {
     let [isShowEditForm, setIsShowEditForm] = useState(null);
     let [page, setPage] = useState(1);
     let [maxPages, setMaxPages] = useState(1);
+    let [createFormValues, setCreateFormValues] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phoneNumber: "",
+        imageUrl: "",
+        country: "",
+        city: "",
+        street: "",
+        streetNumber: ""
+    })
+    let [editFormValues, setEditFormValues] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phoneNumber: "",
+        imageUrl: "",
+        country: "",
+        city: "",
+        street: "",
+        streetNumber: ""
+    });
 
     let criteries = {
         "First name": "firstName",
@@ -32,6 +54,14 @@ export default function Table() {
         "Email": "email",
         "Phone": "phoneNumber",
         "Created": "createdAt"
+    }
+
+    function onCreateChangeHandler(event) {
+        setCreateFormValues(oldValue => ({ ...oldValue, [event.target.name]: event.target.value }))
+    }
+
+    function onEditChangeHandler(event) {
+        setEditFormValues(oldValue => ({ ...oldValue, [event.target.name]: event.target.value }));
     }
 
     function onClickHandler() {
@@ -74,6 +104,12 @@ export default function Table() {
                 }
                 let data = await response.json();
                 setIsShowEditForm(data);
+                setEditFormValues({...data,
+                    ["country"]:data.address.country,
+                    ["city"]:data.address.city,
+                    ["street"]:data.address.street,
+                    ["streetNumber"]:data.address.streetNumber
+            });
             } catch (err) {
                 setIsFailedToFetch(true);
                 return;
@@ -106,23 +142,22 @@ export default function Table() {
         event.preventDefault();
         (async function onEdit() {
             const id = event.target.id;
-            console.log(id);
-            let formData = new FormData(event.target);
-            let firstName = formData.get("firstName");
-            let lastName = formData.get("lastName");
-            let email = formData.get("email");
-            let phoneNumber = formData.get("phoneNumber");
-            let imageUrl = formData.get("imageUrl");
-            let country = formData.get("country");
-            let city = formData.get("city");
-            let streetNumber = formData.get("city");
-            let street = formData.get("street");
+            let firstName = editFormValues.firstName;
+            let lastName = editFormValues.lastName;
+            let email = editFormValues.email;
+            let phoneNumber = editFormValues.phoneNumber;
+            let imageUrl = editFormValues.imageUrl;
+            let country = editFormValues.country;
+            let city = editFormValues.city;
+            let streetNumber = editFormValues.streetNumber;
+            let street = editFormValues.street;
             let address = {
                 country,
                 city,
                 street,
                 streetNumber
             }
+            console.log(firstName, lastName, email, phoneNumber, imageUrl, address)
             let createdAt = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
             let updatedAt = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
             try {
@@ -213,16 +248,15 @@ export default function Table() {
 
     async function onCreateHandler(event) {
         event.preventDefault();
-        let formData = new FormData(event.target);
-        let firstName = formData.get("firstName");
-        let lastName = formData.get("lastName");
-        let email = formData.get("email");
-        let phoneNumber = formData.get("phoneNumber");
-        let imageUrl = formData.get("imageUrl");
-        let country = formData.get("country");
-        let city = formData.get("city");
-        let streetNumber = formData.get("city");
-        let street = formData.get("street");
+        let firstName = createFormValues.firstName;
+        let lastName = createFormValues.lastName;
+        let email = createFormValues.email;
+        let phoneNumber = createFormValues.phoneNumber;
+        let imageUrl = createFormValues.imageUrl;
+        let country = createFormValues.country;
+        let city = createFormValues.city;
+        let streetNumber = createFormValues.streetNumber;
+        let street = createFormValues.street;
         let address = {
             country,
             city,
@@ -322,10 +356,10 @@ export default function Table() {
 
     return (
         <section className="card users-container">
-            {createFormShow ? <CreateForm onCreate={onCreateHandler} onClose={onCloseHandler} /> : ""}
+            {createFormShow ? <CreateForm onCreate={onCreateHandler} onClose={onCloseHandler} createChangeHandler={onCreateChangeHandler} formValues={createFormValues} /> : ""}
             {detailsShow ? <Details userData={detailsShow} onClose={closeDetailsHandler} /> : ""}
             {isShowDeleteForm ? <DeleteForm userId={isShowDeleteForm._id} onClose={closeDeleteFormHandler} onDelete={onDeleteUser} /> : ""}
-            {isShowEditForm ? <EditForm userData={isShowEditForm} onClose={closeEditFormHandler} onEdit={onEditHandler} /> : ""}
+            {isShowEditForm ? <EditForm userData={isShowEditForm} onClose={closeEditFormHandler} onEdit={onEditHandler} editChangeHandler={onEditChangeHandler} formValues={editFormValues} /> : ""}
             <Search onSearch={onSearchHandler} />
             <div className="table-wrapper">
                 {pending || resultsNotFind || isFailedToFetch || isNoContent
