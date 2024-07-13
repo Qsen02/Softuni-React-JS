@@ -7,12 +7,12 @@ export default function CatalogGames({
     category
 }) {
     return (
-        <div class="allGames">
-            <div class="allGames-info">
+        <div className="allGames">
+            <div className="allGames-info">
                 <img src={imageUrl} alt={title} />
                 <h6>{category}</h6>
                 <h2>{title}</h2>
-                <Link to={`/catalog/${id}`} class="details-button">Details</Link>
+                <Link to={`/catalog/${id}`} className="details-button">Details</Link>
             </div>
         </div>
     )

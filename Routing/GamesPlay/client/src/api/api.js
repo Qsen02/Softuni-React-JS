@@ -8,12 +8,11 @@ async function request(method, url, data) {
         headers: {}
     }
     let userData = getUserData();
+    options.headers["Content-Type"] = "application/json";
     if (userData) {
-        options.headers["Content-Type"] = "application/json";
         options.headers["X-Authorization"] = userData.accessToken;
     }
     if (data) {
-        options.headers["Content-Type"] = "application/json";
         options.body = JSON.stringify(data);
     }
     try {
