@@ -32,6 +32,7 @@ export async function editGame(id, data) {
 
 export async function getComments(gameId) {
     let data = await get(`${commentEndpoint}?where=gameId%3D%22${gameId}%22`);
+    return data;
 }
 
 export async function postComment(data) {

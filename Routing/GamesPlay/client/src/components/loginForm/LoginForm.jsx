@@ -33,7 +33,7 @@ export default function LoginForm() {
     }
     return (
         <section id="login-page" className="auth">
-            <form  onSubmit={onLogin} id="login">
+            <form onSubmit={onLogin} id="login">
 
                 <div className="container">
                     <div className="brand-logo"></div>
