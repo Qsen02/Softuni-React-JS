@@ -3,7 +3,9 @@ import { Link, useNavigate } from "react-router-dom"
 import { login } from "../../api/userService";
 import { setUserData } from "../../utils/userDataHelper";
 
-export default function LoginForm() {
+export default function LoginForm({
+    setUserHandler
+}) {
     let [formValues, setFormValues] = useState({
         email: "",
         password: ""
@@ -28,6 +30,7 @@ export default function LoginForm() {
                 ...oldValues, email: "",
                 password: "",
             }))
+            setUserHandler(user);
             navigate("/");
         } catch (err) {
             alert(err.message);
