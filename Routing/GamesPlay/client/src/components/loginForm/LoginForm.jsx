@@ -24,7 +24,10 @@ export default function LoginForm() {
             }
             let user = await login({ email, password });
             setUserData(user);
-            event.target.reset();
+            setFormValues(oldValues => ({
+                ...oldValues, email: "",
+                password: "",
+            }))
             navigate("/");
         } catch (err) {
             alert(err.message);
@@ -39,10 +42,10 @@ export default function LoginForm() {
                     <div className="brand-logo"></div>
                     <h1>Login</h1>
                     <label htmlFor="email">Email:</label>
-                    <input type="email" id="email" name="email" placeholder="Sokka@gmail.com" value={formValues.email} onChange={changeHandler}/>
+                    <input type="email" id="email" name="email" placeholder="Sokka@gmail.com" value={formValues.email} onChange={changeHandler} />
 
                     <label htmlFor="login-pass">Password:</label>
-                    <input type="password" id="login-password" name="password" value={formValues.password} onChange={changeHandler}/>
+                    <input type="password" id="login-password" name="password" value={formValues.password} onChange={changeHandler} />
                     <input type="submit" className="btn submit" value="Login" />
                     <p className="field">
                         <span>If you don't have profile click <Link to="/register">here</Link></span>

@@ -28,7 +28,11 @@ export default function RegisterForm() {
             }
             let user = await register({ email, password });
             setUserData(user);
-            event.target.reset();
+            setFormValues(oldValues => ({
+                ...oldValues, email: "",
+                password: "",
+                repass: ""
+            }))
             navigate("/");
         } catch (err) {
             alert(err.message);

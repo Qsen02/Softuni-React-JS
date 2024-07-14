@@ -36,5 +36,5 @@ export async function getComments(gameId) {
 }
 
 export async function postComment(data) {
-    await post(commentEndpoint, data);
+    return await post(commentEndpoint, data);
 }

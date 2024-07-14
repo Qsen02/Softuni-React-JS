@@ -32,7 +32,6 @@ export default function GameDetails() {
     useEffect(() => {
         (async () => {
             let comments = await getComments(id);
-            console.log(comments);
             setComments(comments);
         })()
     }, [])
@@ -52,14 +51,15 @@ export default function GameDetails() {
     }
 
     async function onComment(event) {
+        event.preventDefault();
         let comment = formValues.comment;
         try {
             if (!comment) {
                 throw new Error("Field must be filled!");
             }
-            await postComment({ gameId: id, comment });
-            event.target.reset();
-            navigate(`/catalog/${id}`);
+            let newComment = await postComment({ gameId: id, comment });
+            setComments(oldValues => [...oldValues, newComment]);
+            setFormValues(oldValues => ({ ...oldValues, comment: "" }))
         } catch (err) {
             alert(err.message);
             return;

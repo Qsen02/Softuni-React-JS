@@ -1,18 +1,27 @@
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../api/userService";
 import { useEffect, useState } from "react";
-import { getUserData,removeUserData } from "../../utils/userDataHelper";
+import { getUserData, removeUserData } from "../../utils/userDataHelper";
 
 export default function Header() {
     let [isUser, setIsUser] = useState(null);
+
     useEffect(() => {
         let user = getUserData();
+        console.log(user);
         if (user) {
-            setIsUser(user);
+            setIsUser(oldValue => {
+                let newValue = user;
+                return newValue
+            });
         } else {
-            setIsUser(null);
+            setIsUser(oldValue => {
+                let newValue = null;
+                return newValue
+            });
         }
     }, [])
+
     let navigate = useNavigate();
 
     async function onLogout() {
@@ -29,7 +38,7 @@ export default function Header() {
                 {isUser
                     ? <div id="user">
                         <Link to="/create">Create Game</Link>
-                        <Link to="/*" onClick={onLogout}>Logout</Link>
+                        <Link to="/logout" onClick={onLogout}>Logout</Link>
                     </div>
                     : <div id="guest">
                         <Link to="/login">Login</Link>

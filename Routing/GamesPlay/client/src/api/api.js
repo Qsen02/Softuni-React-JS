@@ -18,7 +18,7 @@ async function request(method, url, data) {
     try {
         let response = await fetch(url, options);
         if (!response.ok) {
-            if (response.status == 403) {
+            if (response.status == 403 || response.status == 409) {
                 removeUserData();
             }
             let err = await response.json();
@@ -30,8 +30,7 @@ async function request(method, url, data) {
         let data = await response.json();
         return data;
     } catch (err) {
-        alert(err.message);
-        return;
+        throw new Error(err.message);
     }
 }
 

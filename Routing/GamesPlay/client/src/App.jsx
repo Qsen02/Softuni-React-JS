@@ -9,7 +9,6 @@ import GameDetails from "./components/gameDetails/GameDetails"
 import EditForm from "./components/editForm/EditForm"
 
 function App() {
-
     return (
         <>
             <div id="box">
