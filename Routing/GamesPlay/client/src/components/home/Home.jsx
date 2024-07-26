@@ -1,15 +1,9 @@
-import { useEffect, useState } from "react"
-import { getLatesGames } from "../../api/gameService";
 import HomeGames from "./home-games/HomeGames";
 
+import { useGetLatestGames } from "../../hooks/useGames";
+
 export default function Home() {
-    let [games, setGames] = useState([]);
-    useEffect(() => {
-        (async () => {
-            let data = await getLatesGames();
-            setGames(data);
-        })()
-    }, [])
+  const {games}=useGetLatestGames([]);
 
     return (
         <section id="welcome-world">
