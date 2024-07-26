@@ -1,41 +1,22 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 
-import { deleteGame, getComments, getGameById, postComment } from "../../api/gameService";
+import { deleteGame, postComment } from "../../api/gameService";
 import GameDetailsComments from "./gameDetailsComments/GameDetailsComments";
 import { UserContext } from "../../context/userContext";
+import { useGetOneGame } from "../../hooks/useGames";
 
 export default function GameDetails() {
-    let [game, setGame] = useState({});
-    let [isOwner, setIsOwner] = useState(false);
-    let [comments, setComments] = useState([]);
+   const initalGameValue={};
+   const initalCommentsValue=[];
+   const initalOwnerValue=false;
     let [formValues, setFormValues] = useState({
         comment: ""
     })
     let { id } = useParams();
     let navigate = useNavigate();
     const {user}=useContext(UserContext)
-
-    useEffect(() => {
-        (async () => {
-            let game = await getGameById(id);
-            setGame(game);
-            if (user) {
-                if (user._id == game._ownerId) {
-                    setIsOwner(true);
-                } else {
-                    setIsOwner(false);
-                }
-            }
-        })()
-    }, [])
-
-    useEffect(() => {
-        (async () => {
-            let comments = await getComments(id);
-            setComments(comments);
-        })()
-    }, [])
+    const {game,comments,isOwner,setCommentHandler}=useGetOneGame(initalGameValue,initalCommentsValue,initalOwnerValue,user,id )
 
     async function onDelete() {
         let confirming = confirm("Are you sure?");
@@ -59,7 +40,7 @@ export default function GameDetails() {
                 throw new Error("Field must be filled!");
             }
             let newComment = await postComment({ gameId: id, comment });
-            setComments(oldValues => [...oldValues, newComment]);
+            setCommentHandler(newComment);
             setFormValues(oldValues => ({ ...oldValues, comment: "" }))
         } catch (err) {
             alert(err.message);
