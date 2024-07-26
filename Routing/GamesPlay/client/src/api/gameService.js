@@ -9,7 +9,7 @@ export async function getAllGames() {
 }
 
 export async function getLatesGames() {
-    let data = await get(`${endpoint}?sortBy=_createdOn%20desc&distinct=category`);
+    let data = await get(`${endpoint}?sortBy=_createdOn%20desc&distinct=category&pageSize=3`);
     return data;
 }
 

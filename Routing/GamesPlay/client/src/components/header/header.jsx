@@ -1,21 +1,11 @@
-import { Link, useNavigate } from "react-router-dom";
-import { logout } from "../../api/userService";
-import {  removeUserData } from "../../utils/userDataHelper";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 
-export default function Header({
-    user,
-    removeUserHandler
-}) {
+import { UserContext } from "../../context/userContext";
 
-    let navigate = useNavigate();
 
-    async function onLogout() {
-        await logout();
-        removeUserData();
-        removeUserHandler();
-        navigate("/");
-    }
-
+export default function Header() {
+    const { user } = useContext(UserContext);
     return (
         <header>
             <h1><Link className="home" to="/">GamesPlay</Link></h1>
@@ -24,7 +14,7 @@ export default function Header({
                 {user
                     ? <div id="user">
                         <Link to="/create">Create Game</Link>
-                        <Link to="/logout" onClick={onLogout}>Logout</Link>
+                        <Link to="/logout">Logout</Link>
                     </div>
                     : <div id="guest">
                         <Link to="/login">Login</Link>

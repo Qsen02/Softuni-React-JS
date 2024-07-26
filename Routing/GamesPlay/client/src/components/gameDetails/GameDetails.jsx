@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
+
 import { deleteGame, getComments, getGameById, postComment } from "../../api/gameService";
-import { getUserData } from "../../utils/userDataHelper";
 import GameDetailsComments from "./gameDetailsComments/GameDetailsComments";
+import { UserContext } from "../../context/userContext";
 
 export default function GameDetails() {
     let [game, setGame] = useState({});
@@ -13,14 +14,14 @@ export default function GameDetails() {
     })
     let { id } = useParams();
     let navigate = useNavigate();
-    let userData = getUserData();
+    const {user}=useContext(UserContext)
 
     useEffect(() => {
         (async () => {
             let game = await getGameById(id);
             setGame(game);
-            if (userData) {
-                if (userData._id == game._ownerId) {
+            if (user) {
+                if (user._id == game._ownerId) {
                     setIsOwner(true);
                 } else {
                     setIsOwner(false);
@@ -98,7 +99,7 @@ export default function GameDetails() {
                     }
                 </div>
             </div>
-            {userData && !isOwner
+            {user && !isOwner
                 ? <article className="create-comment">
                     <label>Add new comment:</label>
                     <form onSubmit={onComment} className="form">

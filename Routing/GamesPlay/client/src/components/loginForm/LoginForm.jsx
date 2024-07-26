@@ -1,17 +1,17 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+
 import { login } from "../../api/userService";
 import { setUserData } from "../../utils/userDataHelper";
+import { UserContext } from "../../context/userContext";
 
-export default function LoginForm({
-    setUserHandler
-}) {
+export default function LoginForm() {
     let [formValues, setFormValues] = useState({
         email: "",
         password: ""
     })
     let navigate = useNavigate();
-
+    const {setUserHandler}=useContext(UserContext);
     function changeHandler(event) {
         setFormValues(oldValues => ({ ...oldValues, [event.target.name]: event.target.value }))
     }
