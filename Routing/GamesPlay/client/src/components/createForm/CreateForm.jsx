@@ -1,26 +1,20 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom";
 import { useCreateGame } from "../../hooks/useGames";
+import { useNormalForm } from "../../hooks/useForm";
 
 export default function CreateForm() {
-    let [formValues, setFormValues] = useState({
+    const initialvalues={
         title: "",
         category: "",
         maxLevel: "",
         imageUrl: "",
         summary: ""
-    })
+    }
 
     const createGame=useCreateGame();
 
-    let navigate = useNavigate();
+    const {formValues,changeHandler,submitHandler}=useNormalForm(initialvalues,onCreate,"/")
 
-    function changeHandler(event) {
-        setFormValues(oldValues => ({ ...oldValues, [event.target.name]: event.target.value }))
-    }
-
-    async function onCreate(event) {
-        event.preventDefault();
+    async function onCreate() {
         let title = formValues.title;
         let category = formValues.category;
         let imageUrl = formValues.imageUrl;
@@ -31,8 +25,6 @@ export default function CreateForm() {
                 throw new Error("All fields required!");
             }
             await createGame({title,category,imageUrl,summary,maxLevel});
-            event.target.reset();
-            navigate("/");
         } catch (err) {
             alert(err.message);
             return;
@@ -41,7 +33,7 @@ export default function CreateForm() {
 
     return (
         <section id="create-page" className="auth">
-            <form onSubmit={onCreate} id="create">
+            <form onSubmit={submitHandler} id="create">
                 <div className="container">
 
                     <h1>Create Game</h1>

@@ -8,13 +8,13 @@ import LoginForm from "./components/loginForm/LoginForm"
 import CreateForm from "./components/createForm/CreateForm"
 import GameDetails from "./components/gameDetails/GameDetails"
 import EditForm from "./components/editForm/EditForm"
+import Logout from "./components/logout/Logout"
 
 import { useState, useEffect } from "react"
 
 import { getUserData } from "./utils/userDataHelper"
 import { UserContext } from "./context/userContext"
 import { logout } from "./api/userService"
-import Logout from "./components/logout/Logout"
 
 function App() {
     let [isUser, setIsUser] = useState(null);

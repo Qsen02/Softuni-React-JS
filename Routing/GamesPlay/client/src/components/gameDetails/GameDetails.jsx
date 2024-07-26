@@ -4,20 +4,22 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import GameDetailsComments from "./gameDetailsComments/GameDetailsComments";
 import { UserContext } from "../../context/userContext";
 import { useDeleteGame, useGetOneGame, usePostComment } from "../../hooks/useGames";
+import { useNormalForm } from "../../hooks/useForm";
 
 export default function GameDetails() {
-   const initalGameValue={};
-   const initalCommentsValue=[];
-   const initalOwnerValue=false;
-    let [formValues, setFormValues] = useState({
+    const initalGameValue = {};
+    const initalCommentsValue = [];
+    const initalOwnerValue = false;
+    const initalvalues = {
         comment: ""
-    })
+    }
     let { id } = useParams();
     let navigate = useNavigate();
-    const deleteGame=useDeleteGame();
-    const postComment=usePostComment();
-    const {user}=useContext(UserContext);
-    const {game,comments,isOwner,setCommentHandler}=useGetOneGame(initalGameValue,initalCommentsValue,initalOwnerValue,user,id )
+    const deleteGame = useDeleteGame();
+    const postComment = usePostComment();
+    const { user } = useContext(UserContext);
+    const { game, comments, isOwner, setCommentHandler } = useGetOneGame(initalGameValue, initalCommentsValue, initalOwnerValue, user, id);
+    const { formValues, changeHandler, submitHandler } = useNormalForm(initalvalues, onComment, `/catalog/${id}`)
 
     async function onDelete() {
         let confirming = confirm("Are you sure?");
@@ -29,12 +31,7 @@ export default function GameDetails() {
         }
     }
 
-    function changeHandler(event) {
-        setFormValues(oldValues => ({ ...oldValues, [event.target.name]: event.target.value }))
-    }
-
-    async function onComment(event) {
-        event.preventDefault();
+    async function onComment() {
         let comment = formValues.comment;
         try {
             if (!comment) {
@@ -42,7 +39,6 @@ export default function GameDetails() {
             }
             let newComment = await postComment({ gameId: id, comment });
             setCommentHandler(newComment);
-            setFormValues(oldValues => ({ ...oldValues, comment: "" }))
         } catch (err) {
             alert(err.message);
             return;
@@ -84,7 +80,7 @@ export default function GameDetails() {
             {user && !isOwner
                 ? <article className="create-comment">
                     <label>Add new comment:</label>
-                    <form onSubmit={onComment} className="form">
+                    <form onSubmit={submitHandler} className="form">
                         <textarea name="comment" placeholder="Comment......" value={formValues.comment} onChange={changeHandler} />
                         <input className="btn submit" type="submit" value="Add comment" />
                     </form>

@@ -13,6 +13,12 @@ export function useNormalForm(initalvalues, callback, path) {
         event.preventDefault();
         callback();
         navigate(path);
+        setFormValues(oldValues => {
+            for (let value in oldValues) {
+                oldValues[value] = "";
+            }
+            return {...oldValues };
+        })
     }
 
     return {
