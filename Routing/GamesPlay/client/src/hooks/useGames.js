@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllGames, getComments, getGameById, getLatesGames } from "../api/gameService";
+import { createGame, deleteGame, editGame, getAllGames, getComments, getGameById, getLatesGames } from "../api/gameService";
 
 export function useGetAllGames(initalValues) {
     let [games, setGames] = useState(initalValues);
@@ -67,4 +67,28 @@ export function useGetOneGame(initalGameValue, initalCommentsValue, initalOwnerV
         comments,
         setCommentHandler
     }
+}
+
+export function useCreateGame() {
+    async function creatingGame(data) {
+        await createGame(data);
+    }
+
+    return creatingGame;
+}
+
+export function useDeleteGame() {
+    async function deletingGame(gameId) {
+        await deleteGame(gameId);
+    }
+
+    return deletingGame;
+}
+
+export function useEditGame() {
+    async function editingGame(gameId, data) {
+        await editGame(gameId, data);
+    }
+
+    return editingGame;
 }

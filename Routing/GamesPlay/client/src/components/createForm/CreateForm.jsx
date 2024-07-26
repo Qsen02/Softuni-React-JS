@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
-import { createGame } from "../../api/gameService";
+import { useCreateGame } from "../../hooks/useGames";
 
 export default function CreateForm() {
     let [formValues, setFormValues] = useState({
@@ -10,6 +10,8 @@ export default function CreateForm() {
         imageUrl: "",
         summary: ""
     })
+
+    const createGame=useCreateGame();
 
     let navigate = useNavigate();
 

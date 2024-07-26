@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom";
-import { editGame, getGameById } from "../../api/gameService";
+import { getGameById } from "../../api/gameService";
+import { useEditGame } from "../../hooks/useGames";
 
 export default function EditForm() {
     let [formValues, setFormValues] = useState({
@@ -12,6 +13,7 @@ export default function EditForm() {
     })
     let { id } = useParams();
     let navigate=useNavigate();
+    const editGame=useEditGame();
 
     function changeHandler(event) {
         setFormValues(oldValues => ({ ...oldValues, [event.target.name]: event.target.value }));
