@@ -1,23 +1,20 @@
-import { useContext, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useContext } from "react"
+import { Link } from "react-router-dom"
 
 import { login } from "../../api/userService";
 import { setUserData } from "../../utils/userDataHelper";
 import { UserContext } from "../../context/userContext";
+import { useNormalForm } from "../../hooks/useForm";
 
 export default function LoginForm() {
-    let [formValues, setFormValues] = useState({
+    const initialvalues={
         email: "",
         password: ""
-    })
-    let navigate = useNavigate();
+    };
     const {setUserHandler}=useContext(UserContext);
-    function changeHandler(event) {
-        setFormValues(oldValues => ({ ...oldValues, [event.target.name]: event.target.value }))
-    }
+    const {formValues,changeHandler,submitHandler}=useNormalForm(initialvalues,onLogin,"/");
 
-    async function onLogin(event) {
-        event.preventDefault();
+    async function onLogin() {
         let email = formValues.email;
         let password = formValues.password;
         try {
@@ -26,20 +23,16 @@ export default function LoginForm() {
             }
             let user = await login({ email, password });
             setUserData(user);
-            setFormValues(oldValues => ({
-                ...oldValues, email: "",
-                password: "",
-            }))
             setUserHandler(user);
-            navigate("/");
         } catch (err) {
             alert(err.message);
             return;
         }
     }
+
     return (
         <section id="login-page" className="auth">
-            <form onSubmit={onLogin} id="login">
+            <form onSubmit={submitHandler} id="login">
 
                 <div className="container">
                     <div className="brand-logo"></div>

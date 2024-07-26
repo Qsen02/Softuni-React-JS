@@ -1,24 +1,21 @@
-import { useContext, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useContext } from "react"
+import { Link } from "react-router-dom"
 
 import { register } from "../../api/userService";
 import { setUserData } from "../../utils/userDataHelper";
 import { UserContext } from "../../context/userContext";
+import { useNormalForm } from "../../hooks/useForm";
 
 export default function RegisterForm() {
-    let [formValues, setFormValues] = useState({
+    const initialvalues={
         email: "",
         password: "",
         repass: ""
-    })
-    const {setUserHandler}=useContext(UserContext);
-    let navigate = useNavigate();
-    function changeHandler(event) {
-        setFormValues(oldValues => ({ ...oldValues, [event.target.name]: event.target.value }))
     }
+    const {setUserHandler}=useContext(UserContext);
+    const {formValues,changeHandler,submitHandler}=useNormalForm(initialvalues,onRegister,"/");
 
-    async function onRegister(event) {
-        event.preventDefault();
+    async function onRegister() {
         let email = formValues.email;
         let password = formValues.password;
         let repass = formValues.repass;
@@ -31,13 +28,8 @@ export default function RegisterForm() {
             }
             let user = await register({ email, password });
             setUserData(user);
-            setFormValues(oldValues => ({
-                ...oldValues, email: "",
-                password: "",
-                repass: ""
-            }))
+
             setUserHandler(user);
-            navigate("/");
         } catch (err) {
             alert(err.message);
             return;
@@ -46,7 +38,7 @@ export default function RegisterForm() {
 
     return (
         <section id="register-page" className="content auth">
-            <form onSubmit={onRegister} id="register">
+            <form onSubmit={submitHandler} id="register">
                 <div className="container">
                     <div className="brand-logo"></div>
                     <h1>Register</h1>
