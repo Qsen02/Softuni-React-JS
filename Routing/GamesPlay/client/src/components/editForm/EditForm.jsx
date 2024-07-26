@@ -2,32 +2,21 @@ import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom";
 import { getGameById } from "../../api/gameService";
 import { useEditGame } from "../../hooks/useGames";
+import { useNormalForm } from "../../hooks/useForm";
 
 export default function EditForm() {
-    let [formValues, setFormValues] = useState({
+    const initialvalues={
         title: "",
         category: "",
         maxLevel: "",
         imageUrl: "",
         summary: ""
-    })
-    let { id } = useParams();
-    let navigate=useNavigate();
-    const editGame=useEditGame();
-
-    function changeHandler(event) {
-        setFormValues(oldValues => ({ ...oldValues, [event.target.name]: event.target.value }));
     }
+    let { id } = useParams();
+    const editGame=useEditGame();
+    const {formValues,changeHandler,submitHandler}=useNormalForm(initialvalues,onEdit,`/catalog/${id}`,id)
 
-    useEffect(() => {
-        (async () => {
-            let game = await getGameById(id);
-            setFormValues(game);
-        })()
-    }, [])
-
-    async function onEdit(event) {
-        event.preventDefault();
+    async function onEdit() {
         let title = formValues.title;
         let category = formValues.category;
         let maxLevel = formValues.maxLevel;
@@ -38,8 +27,6 @@ export default function EditForm() {
                 throw new Error("All fields required!");
             }
             await editGame(id, { title, category, imageUrl, summary, maxLevel, _id: id });
-            event.target.reset();
-            navigate(`/catalog/${id}`);
         } catch (err) {
             alert(err.message);
             return;
@@ -48,7 +35,7 @@ export default function EditForm() {
 
     return (
         <section id="edit-page" className="auth">
-            <form onSubmit={onEdit} id="edit">
+            <form onSubmit={submitHandler} id="edit">
                 <div className="container">
 
                     <h1>Edit Game</h1>
