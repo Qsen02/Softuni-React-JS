@@ -1,10 +1,9 @@
 import { useContext, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 
-import { postComment } from "../../api/gameService";
 import GameDetailsComments from "./gameDetailsComments/GameDetailsComments";
 import { UserContext } from "../../context/userContext";
-import { useDeleteGame, useGetOneGame } from "../../hooks/useGames";
+import { useDeleteGame, useGetOneGame, usePostComment } from "../../hooks/useGames";
 
 export default function GameDetails() {
    const initalGameValue={};
@@ -16,6 +15,7 @@ export default function GameDetails() {
     let { id } = useParams();
     let navigate = useNavigate();
     const deleteGame=useDeleteGame();
+    const postComment=usePostComment();
     const {user}=useContext(UserContext);
     const {game,comments,isOwner,setCommentHandler}=useGetOneGame(initalGameValue,initalCommentsValue,initalOwnerValue,user,id )
 

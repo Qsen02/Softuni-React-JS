@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createGame, deleteGame, editGame, getAllGames, getComments, getGameById, getLatesGames } from "../api/gameService";
+import { createGame, deleteGame, editGame, getAllGames, getComments, getGameById, getLatesGames, postComment } from "../api/gameService";
 
 export function useGetAllGames(initalValues) {
     let [games, setGames] = useState(initalValues);
@@ -91,4 +91,12 @@ export function useEditGame() {
     }
 
     return editingGame;
+}
+
+export function usePostComment() {
+    async function postingComment(data) {
+        return await postComment(data);
+    }
+
+    return postingComment;
 }
