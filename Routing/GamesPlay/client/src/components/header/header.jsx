@@ -1,11 +1,10 @@
-import { useContext } from "react";
 import { Link } from "react-router-dom";
 
-import { UserContext } from "../../context/userContext";
+import { useUserContext } from "../../context/userContext";
 
 
 export default function Header() {
-    const { user } = useContext(UserContext);
+    const { user } = useUserContext();
     return (
         <header>
             <h1><Link className="home" to="/">GamesPlay</Link></h1>

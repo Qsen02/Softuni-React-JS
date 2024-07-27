@@ -1,10 +1,10 @@
-import { useContext } from "react"
-import { UserContext } from "../../context/userContext"
+import { useUserContext } from "../../context/userContext"
 
-export default function Logout(){
-const {removeUserHandler}=useContext(UserContext);
-removeUserHandler();
-   return (
-       <></>
-   )
+import { Navigate } from "react-router-dom";
+
+export default function Logout() {
+    const { removeUserHandler } = useUserContext();
+    removeUserHandler();
+
+    return <Navigate to="/" />
 }

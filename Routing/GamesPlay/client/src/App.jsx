@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate } from "react-router-dom"
+import { Routes, Route } from "react-router-dom"
 
 import Header from "./components/header/header"
 import Home from "./components/home/Home"
@@ -9,39 +9,12 @@ import CreateForm from "./components/createForm/CreateForm"
 import GameDetails from "./components/gameDetails/GameDetails"
 import EditForm from "./components/editForm/EditForm"
 import Logout from "./components/logout/Logout"
-
-import { useState, useEffect } from "react"
-
-import { getUserData } from "./utils/userDataHelper"
-import { UserContext } from "./context/userContext"
-import { logout } from "./api/userService"
+import UserContextProvider from "./context/userContext"
 
 function App() {
-    let [isUser, setIsUser] = useState(null);
-    let userData = getUserData();
-    let navigate=useNavigate();
-
-    useEffect(() => {
-        if (userData) {
-            setIsUser(userData);
-        } else {
-            setIsUser(null);
-        }
-    }, [])
-
-    function onSetUserHandler(user) {
-        setIsUser(user);
-    }
-
-    async function onRemoveUserHandler() {
-        await logout();
-        setIsUser(null);
-        navigate("/");
-    }
 
     return (
-        <>
-            <UserContext.Provider value={{user:isUser,setUserHandler:onSetUserHandler,removeUserHandler:onRemoveUserHandler}}>
+        <UserContextProvider>
                 <div id="box">
                     <Header />
                     <main id="main-content">
@@ -57,8 +30,7 @@ function App() {
                         </Routes>
                     </main>
                 </div>
-            </UserContext.Provider>
-        </>
+        </UserContextProvider>
     )
 }
 

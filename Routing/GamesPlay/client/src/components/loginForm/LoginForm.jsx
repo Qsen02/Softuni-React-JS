@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 
 import { login } from "../../api/userService";
 import { setUserData } from "../../utils/userDataHelper";
-import { UserContext } from "../../context/userContext";
+import {  useUserContext } from "../../context/userContext";
 import { useNormalForm } from "../../hooks/useForm";
 
 export default function LoginForm() {
@@ -11,7 +11,7 @@ export default function LoginForm() {
         email: "",
         password: ""
     };
-    const {setUserHandler}=useContext(UserContext);
+    const {setUserHandler}=useUserContext();
     const {formValues,changeHandler,submitHandler}=useNormalForm(initialvalues,onLogin,"/");
 
     async function onLogin() {

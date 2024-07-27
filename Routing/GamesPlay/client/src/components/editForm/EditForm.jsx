@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react"
-import { useNavigate, useParams } from "react-router-dom";
-import { getGameById } from "../../api/gameService";
+import {  useParams } from "react-router-dom";
 import { useEditGame } from "../../hooks/useGames";
 import { useNormalForm } from "../../hooks/useForm";
 

@@ -1,8 +1,7 @@
-import { useContext, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 
 import GameDetailsComments from "./gameDetailsComments/GameDetailsComments";
-import { UserContext } from "../../context/userContext";
+import {  useUserContext } from "../../context/userContext";
 import { useDeleteGame, useGetOneGame, usePostComment } from "../../hooks/useGames";
 import { useNormalForm } from "../../hooks/useForm";
 
@@ -17,7 +16,7 @@ export default function GameDetails() {
     let navigate = useNavigate();
     const deleteGame = useDeleteGame();
     const postComment = usePostComment();
-    const { user } = useContext(UserContext);
+    const { user } = useUserContext();
     const { game, comments, isOwner, setCommentHandler } = useGetOneGame(initalGameValue, initalCommentsValue, initalOwnerValue, user, id);
     const { formValues, changeHandler, submitHandler } = useNormalForm(initalvalues, onComment, `/catalog/${id}`)
 
