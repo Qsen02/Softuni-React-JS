@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom"
 
-import { register } from "../../api/userService";
 import { setUserData } from "../../utils/userDataHelper";
 import {  useUserContext } from "../../context/userContext";
 import { useNormalForm } from "../../hooks/useForm";
+import { useRegister } from "../../hooks/useAuth";
 
 export default function RegisterForm() {
     const initialvalues={
@@ -11,6 +11,7 @@ export default function RegisterForm() {
         password: "",
         repass: ""
     }
+    const register=useRegister();
     const {setUserHandler}=useUserContext();
     const {formValues,changeHandler,submitHandler}=useNormalForm(initialvalues,onRegister,"/");
 
