@@ -1,16 +1,16 @@
-import { useContext } from "react"
 import { Link } from "react-router-dom"
 
-import { login } from "../../api/userService";
 import { setUserData } from "../../utils/userDataHelper";
 import {  useUserContext } from "../../context/userContext";
 import { useNormalForm } from "../../hooks/useForm";
+import { useLogin } from "../../hooks/useAuth";
 
 export default function LoginForm() {
     const initialvalues={
         email: "",
         password: ""
     };
+    const login=useLogin();
     const {setUserHandler}=useUserContext();
     const {formValues,changeHandler,submitHandler}=useNormalForm(initialvalues,onLogin,"/");
 
