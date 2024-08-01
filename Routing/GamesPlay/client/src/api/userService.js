@@ -13,3 +13,7 @@ export async function login(data) {
 export async function logout() {
     await get(`${endpoint}/logout`);
 }
+
+export async function getUserById(id) {
+    return await get(`${endpoint}/${id}`);
+}

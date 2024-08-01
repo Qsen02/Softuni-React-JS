@@ -36,8 +36,8 @@ export default function GameDetails() {
             if (!comment) {
                 throw new Error("Field must be filled!");
             }
-            let newComment = await postComment({ gameId: id, comment });
-            setCommentHandler(newComment);
+            await postComment({ gameId: id, comment });
+            setCommentHandler();
             navigate(`/catalog/${id}`);
         } catch (err) {
             alert(err.message);
@@ -71,7 +71,7 @@ export default function GameDetails() {
                     <h2>Comments:</h2>
                     {comments.length > 0
                         ? <ul>
-                            {comments.map(el => <GameDetailsComments key={el._id} content={el.comment} user={user}/>)}
+                            {comments.map(el => <GameDetailsComments key={el._id} content={el.comment} author={el.author?.email}/>)}
                         </ul>
                         : <p className="no-comment">No comments.</p>
                     }

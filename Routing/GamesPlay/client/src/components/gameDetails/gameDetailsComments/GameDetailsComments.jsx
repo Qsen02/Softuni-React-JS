@@ -1,10 +1,10 @@
 export default function GameDetailsComments({
     content,
-    user
+    author
 }) {
     return (
         <li className="comment">
-            <p>{user.email}: {content}</p>
+            <p>{author}: {content}</p>
         </li>
     )
 }

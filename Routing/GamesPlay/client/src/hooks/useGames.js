@@ -36,8 +36,9 @@ export function useGetOneGame(initalGameValue, initalCommentsValue, initalOwnerV
     let [isOwner, setIsOwner] = useState(initalOwnerValue);
     let [comments, setComments] = useState(initalCommentsValue);
 
-    function setCommentHandler(newComment) {
-        setComments(oldValues => [...oldValues, newComment]);
+    async function setCommentHandler() {
+        let comments = await getComments(gameId);
+        setComments(oldValues => [...comments]);
     }
 
     useEffect(() => {
@@ -57,6 +58,7 @@ export function useGetOneGame(initalGameValue, initalCommentsValue, initalOwnerV
     useEffect(() => {
         (async() => {
             let comments = await getComments(gameId);
+            console.log(comments);
             setComments(comments);
         })()
     }, [])
