@@ -1,8 +1,9 @@
 import { useCreateGame } from "../../hooks/useGames";
 import { useNormalForm } from "../../hooks/useForm";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateForm() {
-    const initialvalues={
+    const initialvalues = {
         title: "",
         category: "",
         maxLevel: "",
@@ -10,9 +11,9 @@ export default function CreateForm() {
         summary: ""
     }
 
-    const createGame=useCreateGame();
-
-    const {formValues,changeHandler,submitHandler}=useNormalForm(initialvalues,onCreate,"/")
+    const createGame = useCreateGame();
+    const navigate = useNavigate();
+    const { formValues, changeHandler, submitHandler } = useNormalForm(initialvalues, onCreate)
 
     async function onCreate() {
         let title = formValues.title;
@@ -24,7 +25,8 @@ export default function CreateForm() {
             if (!title || !category || !imageUrl || !summary || !maxLevel) {
                 throw new Error("All fields required!");
             }
-            await createGame({title,category,imageUrl,summary,maxLevel});
+            await createGame({ title, category, imageUrl, summary, maxLevel });
+            navigate("/");
         } catch (err) {
             alert(err.message);
             return;

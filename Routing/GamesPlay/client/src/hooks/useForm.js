@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getGameById } from "../api/gameService";
 
-export function useNormalForm(initalvalues, callback, path, id) {
+export function useNormalForm(initalvalues, callback, id) {
     const [formValues, setFormValues] = useState(initalvalues);
-    const navigate = useNavigate();
 
     function changeHandler(event) {
         setFormValues(oldValues => ({...oldValues, [event.target.name]: event.target.value }))
@@ -22,7 +21,6 @@ export function useNormalForm(initalvalues, callback, path, id) {
     async function submitHandler(event) {
         event.preventDefault();
         callback();
-        navigate(path);
         setFormValues(oldValues => {
             for (let value in oldValues) {
                 oldValues[value] = "";

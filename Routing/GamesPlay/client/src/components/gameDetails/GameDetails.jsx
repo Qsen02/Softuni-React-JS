@@ -18,7 +18,7 @@ export default function GameDetails() {
     const postComment = usePostComment();
     const { user } = useUserContext();
     const { game, comments, isOwner, setCommentHandler } = useGetOneGame(initalGameValue, initalCommentsValue, initalOwnerValue, user, id);
-    const { formValues, changeHandler, submitHandler } = useNormalForm(initalvalues, onComment, `/catalog/${id}`)
+    const { formValues, changeHandler, submitHandler } = useNormalForm(initalvalues, onComment)
 
     async function onDelete() {
         let confirming = confirm("Are you sure?");
@@ -38,6 +38,7 @@ export default function GameDetails() {
             }
             let newComment = await postComment({ gameId: id, comment });
             setCommentHandler(newComment);
+            navigate(`/catalog/${id}`);
         } catch (err) {
             alert(err.message);
             return;
@@ -70,7 +71,7 @@ export default function GameDetails() {
                     <h2>Comments:</h2>
                     {comments.length > 0
                         ? <ul>
-                            {comments.map(el => <GameDetailsComments key={el._id} content={el.comment} />)}
+                            {comments.map(el => <GameDetailsComments key={el._id} content={el.comment} user={user}/>)}
                         </ul>
                         : <p className="no-comment">No comments.</p>
                     }

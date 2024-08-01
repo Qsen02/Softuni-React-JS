@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import { setUserData } from "../../utils/userDataHelper";
 import {  useUserContext } from "../../context/userContext";
@@ -12,8 +12,9 @@ export default function RegisterForm() {
         repass: ""
     }
     const register=useRegister();
+    const navigate=useNavigate();
     const {setUserHandler}=useUserContext();
-    const {formValues,changeHandler,submitHandler}=useNormalForm(initialvalues,onRegister,"/");
+    const {formValues,changeHandler,submitHandler}=useNormalForm(initialvalues,onRegister);
 
     async function onRegister() {
         let email = formValues.email;
@@ -30,6 +31,7 @@ export default function RegisterForm() {
             setUserData(user);
 
             setUserHandler(user);
+            navigate("/");
         } catch (err) {
             alert(err.message);
             return;

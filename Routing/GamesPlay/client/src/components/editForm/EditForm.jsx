@@ -1,4 +1,4 @@
-import {  useParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import { useEditGame } from "../../hooks/useGames";
 import { useNormalForm } from "../../hooks/useForm";
 
@@ -12,7 +12,8 @@ export default function EditForm() {
     }
     let { id } = useParams();
     const editGame=useEditGame();
-    const {formValues,changeHandler,submitHandler}=useNormalForm(initialvalues,onEdit,`/catalog/${id}`,id)
+    const navigate=useNavigate();
+    const {formValues,changeHandler,submitHandler}=useNormalForm(initialvalues,onEdit,id)
 
     async function onEdit() {
         let title = formValues.title;
@@ -25,6 +26,7 @@ export default function EditForm() {
                 throw new Error("All fields required!");
             }
             await editGame(id, { title, category, imageUrl, summary, maxLevel, _id: id });
+            navigate(`/catalog/${id}`);
         } catch (err) {
             alert(err.message);
             return;

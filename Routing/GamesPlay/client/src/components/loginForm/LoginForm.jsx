@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import { setUserData } from "../../utils/userDataHelper";
 import {  useUserContext } from "../../context/userContext";
@@ -11,8 +11,9 @@ export default function LoginForm() {
         password: ""
     };
     const login=useLogin();
+    const navigate=useNavigate();
     const {setUserHandler}=useUserContext();
-    const {formValues,changeHandler,submitHandler}=useNormalForm(initialvalues,onLogin,"/");
+    const {formValues,changeHandler,submitHandler}=useNormalForm(initialvalues,onLogin);
 
     async function onLogin() {
         let email = formValues.email;
@@ -24,6 +25,7 @@ export default function LoginForm() {
             let user = await login({ email, password });
             setUserData(user);
             setUserHandler(user);
+            navigate("/");
         } catch (err) {
             alert(err.message);
             return;
