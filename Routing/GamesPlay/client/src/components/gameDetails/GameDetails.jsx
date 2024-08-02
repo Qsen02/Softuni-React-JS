@@ -36,8 +36,8 @@ export default function GameDetails() {
             if (!comment) {
                 throw new Error("Field must be filled!");
             }
-            await postComment({ gameId: id, comment });
-            setCommentHandler();
+            const newComment=await postComment({ gameId: id, comment });
+            setCommentHandler(newComment);
             navigate(`/catalog/${id}`);
         } catch (err) {
             alert(err.message);
